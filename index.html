@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Servicios para profesionales · Rols</title>
+<meta name="description" content="Rols Pro: área privada para profesionales del interiorismo y decoración. Calcula presupuestos, solicita muestras, consulta tus pedidos en tiempo real y descarga tus facturas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --surface:#f7f3f0;
+    --surface-deep:#efe9e4;
+    --surface-warm:#ebe4e4;
+    --beige:#ede2d6;
+    --fg:#333a3c;
+    --muted:rgba(51,58,60,.70);
+    --soft:rgba(51,58,60,.55);
+    --line:rgba(51,58,60,.14);
+    --line-strong:rgba(51,58,60,.35);
+    --cabecera:62px;
+    --display:"League Spartan","League Spartan Fallback",Helvetica,Arial,sans-serif;
+    --sans:"Montserrat","Montserrat Fallback",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (min-width:1024px){ :root{ --cabecera:84px; } }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (max-width:640px){ html,body{ overflow-x:hidden; } }
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:var(--sans); font-size:14px; font-weight:300; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; height:auto; display:block; }
+  .hero, .split, .pilares, .prodgrid, .mosaico, .ventajas{ min-width:0; }
+  a{ color:inherit; }
+  :focus-visible{ outline:2px solid var(--fg); outline-offset:3px; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none!important; animation:none!important; } html{scroll-behavior:auto;} }
+
+  /* ---------- layout ---------- */
+  .wrap{ padding-inline:20px; }
+  @media (min-width:768px){ .wrap{ padding-inline:40px; } }
+  @media (min-width:1024px){ .wrap{ padding-inline:64px; } }
+  .sec{ padding-block:36px; }
+  @media (min-width:768px){ .sec{ padding-block:56px; } }
+
+  /* ---------- type ---------- */
+  .eyebrow{
+    font-size:10.5px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--soft); margin:0;
+  }
+  h1,h2,h3{ font-family:var(--display); font-weight:300; margin:0; text-wrap:balance; }
+  h1{ font-size:clamp(2.05rem,4.5vw,3.35rem); line-height:1.04; letter-spacing:-.022em; }
+  h2{ font-size:clamp(1.65rem,2.9vw,2.4rem); line-height:1.07; letter-spacing:-.018em; }
+  h3{ font-size:17px; font-weight:400; line-height:1.3; letter-spacing:.01em; }
+  p{ margin:0; }
+  .lead{ font-size:13.5px; line-height:1.8; color:var(--muted); max-width:48ch; }
+  .body{ font-size:13.5px; line-height:1.8; color:var(--muted); max-width:58ch; }
+  .body + .body{ margin-top:14px; }
+  .eyebrow + h2{ margin-top:18px; }
+  h2 + .lead, h2 + .body{ margin-top:18px; }
+
+  .arrow{
+    display:inline-flex; align-items:center; gap:12px; width:fit-content;
+    border-bottom:1px solid var(--line-strong); padding-bottom:8px;
+    font-family:var(--sans);
+    font-size:10.5px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
+    text-decoration:none; color:var(--fg); transition:gap .3s ease, border-color .3s ease;
+  }
+  .arrow:hover{ gap:20px; border-color:var(--fg); }
+  .arrow svg{ width:12px; height:12px; flex:none; }
+  .arrow.quiet{ border-bottom-color:transparent; color:var(--soft); }
+  .arrow.quiet:hover{ color:var(--fg); border-bottom-color:var(--line-strong); }
+  .arrow.onDark{ border-bottom-color:rgba(255,255,255,.5); color:#fff; }
+  .arrow.onDark:hover{ border-color:#fff; }
+
+  .ruleHead{ display:flex; align-items:center; gap:20px; }
+  .ruleHead .eyebrow{ white-space:nowrap; }
+  .ruleHead span.rule{ height:1px; flex:1; background:var(--line); }
+  @media (max-width:640px){ .ruleHead .eyebrow{ white-space:normal; line-height:1.6; } }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; white-space:nowrap;
+    border-radius:999px; background:var(--beige); padding:10px 20px;
+    font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+    text-decoration:none; transition:background-color .3s ease; color:var(--fg);
+  }
+  .pill:hover{ background:#e3d5c5; }
+  .pill svg{ width:12px; height:12px; }
+
+  /* ---------- header ---------- */
+  header.site{
+    position:fixed; inset-inline:0; top:0; z-index:50;
+    height:calc(var(--cabecera) + env(safe-area-inset-top,0px));
+    padding-top:env(safe-area-inset-top,0px);
+    background:var(--bg); border-bottom:1px solid transparent;
+  }
+  header.site .bar{ position:relative; height:var(--cabecera); }
+  .burger{ position:absolute; top:50%; left:20px; transform:translateY(-50%); background:none; border:0; padding:0; cursor:pointer; color:inherit; z-index:2; }
+  .burger span{ display:block; width:26px; height:1px; background:currentColor; transition:transform .3s ease; }
+  .burger span+span{ margin-top:8px; }
+  .burger[aria-expanded="true"] span:first-child{ transform:translateY(4.5px) rotate(45deg); }
+  .burger[aria-expanded="true"] span+span{ transform:translateY(-4.5px) rotate(-45deg); }
+  .logo{ position:absolute; top:50%; left:62px; transform:translateY(-74%); z-index:2; }
+  .logo svg{ width:64px; height:auto; display:block; }
+  .tools{ position:absolute; top:50%; right:20px; transform:translateY(-50%); display:flex; align-items:center; gap:20px; list-style:none; margin:0; padding:0; z-index:2; }
+  .tools a,.tools button{ color:inherit; background:none; border:0; padding:0; cursor:pointer; display:block; }
+  .tools svg{ width:17px; height:17px; display:block; }
+  .tools .pill{ display:inline-flex; }
+  .tools .lang{ display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--fg); }
+  .tools .lang svg{ width:11px; height:11px; }
+  .hideS{ display:none; }
+  @media (min-width:1024px){
+    .burger{ left:30px; } .logo{ left:82px; } .logo svg{ width:92px; }
+    .tools{ right:30px; } .hideS{ display:block; }
+  }
+  .skip{ position:absolute; left:-9999px; }
+  .skip:focus{ left:16px; top:12px; z-index:80; background:#fff; padding:8px 12px; }
+
+  .scrim{ position:fixed; inset:var(--cabecera) 0 0; z-index:40; background:rgba(51,58,60,.15); opacity:0; visibility:hidden; transition:opacity .3s ease,visibility .3s ease; border:0; cursor:default; }
+  .scrim.open{ opacity:1; visibility:visible; }
+  .drawer{ position:fixed; top:var(--cabecera); bottom:0; left:0; z-index:45; width:min(25rem,88vw); background:var(--bg); border-right:1px solid var(--line); transform:translateX(-100%); visibility:hidden; transition:transform .3s ease,visibility .3s ease; display:flex; flex-direction:column; padding:22px 22px 26px; }
+  .drawer.open{ transform:none; visibility:visible; }
+  @media (min-width:1024px){ .drawer{ padding-inline:30px; } }
+  .dscroll{ flex:1 1 auto; overflow-y:auto; }
+  .dnav{ list-style:none; margin:0; padding:0; }
+  .dnav li a{ display:flex; align-items:center; gap:10px; padding:14px 0; font-size:15px; font-weight:500; letter-spacing:.01em; color:var(--fg); text-decoration:none; transition:opacity .25s ease; }
+  .dnav li a:hover{ opacity:.6; }
+  .dnav.dsec{ margin-top:14px; padding-top:6px; border-top:1px solid var(--line); }
+  .dnav.dsec li a{ font-size:13px; }
+  .dchev{ margin-left:auto; width:14px; height:14px; color:var(--soft); flex:none; }
+  .dlead{ width:16px; height:16px; flex:none; }
+  .dfoot{ display:flex; flex-direction:column; align-items:flex-start; gap:18px; margin-top:18px; padding-top:20px; border-top:1px solid var(--line); }
+  .dfoot .pill{ display:inline-flex; }
+
+  main{ padding-top:var(--cabecera); }
+
+  /* ---------- subnav profesionales ---------- */
+  .subnav{ border-bottom:1px solid var(--line); background:var(--bg); }
+  .subnav-in{ display:flex; align-items:center; gap:28px; overflow-x:auto; scrollbar-width:none; }
+  .subnav-in::-webkit-scrollbar{ display:none; }
+  .subnav-k{ font-size:10.5px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--soft); white-space:nowrap; padding-right:20px; border-right:1px solid var(--line); }
+  .subnav ul{ list-style:none; margin:0; padding:0; display:flex; gap:0 26px; }
+  .subnav li a{ position:relative; display:block; white-space:nowrap; padding:15px 2px; font-size:13px; font-weight:500; color:var(--soft); text-decoration:none; transition:color .2s ease; }
+  .subnav li a:hover{ color:var(--fg); }
+  .subnav li a[aria-current="page"]{ color:var(--fg); }
+  .subnav li a[aria-current="page"]::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--fg); }
+  @media (max-width:767px){ .subnav-k{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ display:grid; grid-template-columns:minmax(0,1fr); gap:36px; padding-block:40px 36px; }
+  @media (min-width:900px){
+    .hero{ grid-template-columns:minmax(0,1fr) minmax(0,1.32fr); gap:52px; align-items:center; min-height:calc(100svh - var(--cabecera)); box-sizing:border-box; padding-block:34px 44px; }
+  }
+  .hero .copy{ display:flex; flex-direction:column; align-items:flex-start; gap:22px; }
+  .hero .copy h1{ margin-top:2px; }
+  .heroCtas{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; margin-top:6px; }
+  .heroArt{ position:relative; }
+  .heroArt > img{ width:100%; border-radius:16px; background:var(--surface-deep); aspect-ratio:4/3.1; object-fit:cover; }
+  @media (min-width:900px){ .heroArt > img{ aspect-ratio:4/3.15; max-height:calc(100svh - var(--cabecera) - 150px); } }
+
+  /* ---------- pilares (tipos de proyecto) ---------- */
+  .pilares{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 22px; margin-top:34px; }
+  @media (min-width:1024px){ .pilares{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px 32px; } }
+  .pilar{ display:flex; flex-direction:column; text-decoration:none; color:var(--fg); }
+  .pilar img{ border-radius:16px; aspect-ratio:4/3.2; object-fit:cover; width:100%; background:var(--surface-deep); transition:opacity .35s ease; }
+  .pilar:hover img{ opacity:.88; }
+  .pilar .t{ margin-top:16px; font-family:var(--display); font-weight:300; font-size:clamp(1.35rem,2vw,1.6rem); line-height:1.1; letter-spacing:-.015em; min-height:2.2em; }
+  .pilar .p{ margin-top:10px; font-size:12.5px; line-height:1.7; color:var(--muted); }
+  .pilar .arrow{ margin-top:auto; padding-top:16px; border-bottom-color:transparent; color:var(--soft); }
+  .pilar:hover .arrow{ color:var(--fg); border-bottom-color:var(--line-strong); gap:20px; }
+
+  /* ---------- carrusel muestras ---------- */
+  .ideasHead{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 32px; }
+  .ideasHead .eyebrow{ margin-bottom:12px; }
+  .prodgrid{ display:flex; align-items:flex-start; gap:20px; margin-top:34px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:12px; -ms-overflow-style:none; scrollbar-width:none; }
+  .prodgrid::-webkit-scrollbar{ display:none; }
+  .prod{ display:flex; flex-direction:column; text-decoration:none; color:inherit; flex:0 0 clamp(280px,30%,340px); scroll-snap-align:start; }
+  .prod .ph{ position:relative; overflow:hidden; border-radius:16px; background:var(--surface-deep); aspect-ratio:1/1; }
+  .prod .ph img{ width:100%; height:100%; object-fit:cover; transition:opacity .35s ease; }
+  .prod:hover .ph img{ opacity:.9; }
+  .prod .nm{ margin-top:14px; font-family:var(--display); font-size:16px; letter-spacing:.01em; font-weight:400; }
+  .prod .nm .sep{ margin:0 6px; font-weight:300; color:var(--soft); }
+  .prod .prodsub{ margin-top:5px; font-size:12px; color:var(--soft); }
+  .prod .addmuestra{ display:inline-flex; align-items:center; gap:7px; margin-top:13px; align-self:flex-start; font-size:10.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--fg); text-decoration:none; border-bottom:1px solid var(--line-strong); padding-bottom:5px; transition:gap .3s ease,border-color .3s ease; }
+  .prod .addmuestra:hover{ gap:11px; border-color:var(--fg); }
+  .prod .addmuestra svg{ width:12px; height:12px; flex:none; }
+  .slnav{ display:flex; align-items:center; gap:14px; }
+  .ideasHead .slnav .arrow{ transform:translateY(6px); }
+  .slnav button{ width:42px; height:42px; border-radius:50%; border:1px solid var(--line-strong); background:#fff; color:var(--fg); cursor:pointer; display:grid; place-items:center; transition:border-color .2s ease, opacity .2s ease; }
+  .slnav button:hover{ border-color:var(--fg); }
+  .slnav button:disabled{ opacity:.3; cursor:default; }
+  .slnav button svg{ width:16px; height:16px; }
+  @media (max-width:560px){ .slnav button{ display:none; } }
+  .prodgrid{ cursor:grab; }
+  .prodgrid.dragging{ cursor:grabbing; scroll-snap-type:none; }
+  .prodgrid.dragging .prod{ pointer-events:none; }
+
+  /* ---------- ventajas · foto panorámica + columnas abiertas ---------- */
+  .ayuda{ display:flex; flex-direction:column; min-height:calc(100vh - 77px); }
+  .vpano{ width:100%; flex:1 1 0; min-height:260px; object-fit:cover; object-position:center 55%; border-radius:16px; margin:22px 0 26px; background:var(--surface-deep); }
+  .vcols{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; border-top:1px solid var(--line-strong); }
+  @media (min-width:960px){ .vcols{ grid-template-columns:repeat(5,minmax(0,1fr)); } }
+  .vcols li{ padding:24px 20px 26px 0; border-bottom:1px solid var(--line); }
+  @media (min-width:960px){ .vcols li{ border-bottom:0; } .vcols li + li{ padding-left:22px; border-left:1px solid var(--line); } }
+  @media (max-width:959px){ .vcols li:nth-child(even){ padding-left:22px; border-left:1px solid var(--line); } }
+  .vcols .num{ font-family:var(--display); font-weight:300; font-size:1.5rem; line-height:1; letter-spacing:-.02em; color:var(--soft); }
+  .vcols h3{ margin:12px 0 0; font-family:var(--sans); font-weight:500; font-size:13px; }
+  .vcols p{ margin:8px 0 0; font-size:12px; line-height:1.65; color:var(--muted); }
+
+  /* ---------- split catálogo / 3D ---------- */
+  .split{ display:grid; grid-template-columns:minmax(0,1fr); gap:36px; }
+  @media (min-width:900px){ .split{ grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:24px 64px; align-items:center; } .split.rev > :first-child{ order:2; } }
+  .split .art{ margin:0; }
+  .split .art img{ border-radius:16px; width:100%; aspect-ratio:4/3; object-fit:cover; background:var(--surface-deep); }
+  .split .txt{ display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
+  .split .txt .body{ max-width:52ch; }
+  .split .txt .heroCtas{ margin-top:2px; }
+
+  /* ---------- muestras · bloque surface (estilo interioristas) ---------- */
+  .mb{ background:var(--surface); border-radius:16px; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr); }
+  @media (min-width:900px){ .mb{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); } }
+  .mb-txt{ display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:18px; padding:40px; }
+  @media (min-width:900px){ .mb-txt{ padding:56px; } }
+  .mb-txt .body{ max-width:46ch; }
+  .mb-art{ margin:0; }
+  .mb-art img{ width:100%; height:100%; min-height:320px; object-fit:cover; display:block; }
+
+  /* ---------- mosaico proyectos ---------- */
+  .libTop{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:20px 40px; }
+  .mosaico{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 18px; margin-top:38px; }
+  @media (min-width:760px){ .mosaico{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px 28px; } }
+  .mosaico a.mfig{ margin:0; display:block; text-decoration:none; color:inherit; }
+  .mosaico a.mfig img{ transition:opacity .35s ease; } .mosaico a.mfig:hover img{ opacity:.88; }
+  .mosaico img{ width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:16px; background:var(--surface-deep); }
+  .mosaico figcaption{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:4px 12px; margin-top:12px; }
+  .mosaico figcaption span{ font-family:var(--display); font-size:15px; letter-spacing:.01em; }
+  .mosaico figcaption small{ font-size:9.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--soft); }
+  @media (max-width:759px){ .mosaico > *:nth-child(3){ grid-column:1 / -1; } .mosaico > *:nth-child(3) img{ aspect-ratio:16/10; } }
+
+  /* ---------- banner B Corp ---------- */
+  .bcorp{ background:var(--surface-warm); }
+  .bcorp-inner{ display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:22px 28px; padding-block:44px; }
+  @media (min-width:768px){ .bcorp-inner{ padding-block:60px; gap:48px; } }
+  .bcorp-h{ max-width:42ch; font-family:var(--display); font-weight:300; font-size:clamp(1.15rem,1.7vw,1.5rem); line-height:1.2; letter-spacing:-.01em; margin:0; }
+  .bcorp-cta{ margin-top:18px; }
+  .bcorp-seal{ height:108px; width:auto; color:var(--fg); justify-self:end; }
+
+  /* ---------- footer ---------- */
+  footer.site{ background:var(--bg); border-top:1px solid var(--line); }
+  .fcols{ display:grid; gap:36px; padding-block:56px 40px; }
+  @media (min-width:700px){ .fcols{ grid-template-columns:1.2fr repeat(3,1fr); gap:32px; } }
+  .fcols h4{ font-family:var(--sans); font-size:10.5px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; margin:0 0 16px; }
+  .fcols ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .fcols a{ font-size:13px; color:var(--muted); text-decoration:none; transition:color .3s ease; }
+  .fcols a:hover{ color:var(--fg); }
+  .fbrand svg{ display:block; width:88px; height:auto; margin-bottom:20px; }
+  .fcols .fcontact{ display:flex; width:fit-content; align-items:center; gap:12px; font-family:var(--display); font-weight:300; font-size:19px; line-height:1.15; letter-spacing:-.01em; text-decoration:none; color:var(--fg); transition:color .3s ease; }
+  .fcontact:hover{ color:var(--soft); }
+  .fcontact svg{ width:14px; height:14px; margin:0; transition:transform .3s ease; }
+  .fcontact:hover svg{ transform:translateX(4px); }
+  .fcontact-list{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .fcontact-list a{ font-size:13px; color:var(--muted); text-decoration:none; transition:color .3s ease; }
+  .fcontact-list a:hover{ color:var(--fg); }
+  .fcols .fsocial{ list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:row; align-items:center; justify-content:flex-start; gap:20px; }
+  .fcols .fsocial a{ display:block; color:var(--fg); transition:opacity .3s ease; }
+  .fcols .fsocial a:hover{ opacity:.55; }
+  .fcols .fsocial svg{ width:22px; height:22px; margin:0; }
+  .flegal{ border-top:1px solid var(--line); padding-block:22px 40px; display:flex; flex-wrap:wrap; gap:10px 24px; justify-content:space-between; font-size:11.5px; color:var(--soft); }
+  .flegal ul{ list-style:none; display:flex; flex-wrap:wrap; gap:10px 20px; margin:0; padding:0; }
+  .flegal a{ color:inherit; text-decoration:none; }
+  .flegal a:hover{ color:var(--fg); }
+
+  /* ---------- rols pro · hero con ilustración sin caja ---------- */
+  .hero.pro .heroArt > img{ background:none; border-radius:0; aspect-ratio:auto; object-fit:contain; }
+  @media (min-width:1024px){ .hero.pro .heroArt{ margin-right:-64px; } }
+  @media (min-width:900px){
+    .hero.pro{ grid-template-columns:minmax(460px,1fr) minmax(0,2fr); gap:56px; padding-block:24px 32px; }
+    .hero.pro .heroCtas{ gap:14px 24px; }
+    .hero.pro .heroArt{ margin-right:-40px; }
+    .hero.pro .heroArt > img{ margin-left:auto; }
+    .hero.pro .heroArt > img{ aspect-ratio:auto; max-height:calc(100svh - var(--cabecera) - 72px); }
+  }
+
+  /* ---------- accesos · tarjetas en dos tonos con pastilla blanca centrada ---------- */
+  .accHead{ display:grid; gap:14px 56px; align-items:end; }
+  @media (min-width:900px){ .accHead{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); } .accHead .lead{ max-width:52ch; justify-self:end; text-align:right; } }
+  .acc{ list-style:none; margin:40px 0 0; padding:0; display:grid; grid-template-columns:minmax(0,1fr); gap:64px 24px; }
+  @media (min-width:640px){ .acc{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (min-width:1024px){ .acc{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:64px 28px; } }
+  .acc li{ position:relative; margin-top:36px; border-radius:16px; padding:0 28px 32px; display:flex; flex-direction:column; align-items:center; }
+  .acc li:nth-child(-n+3){ background:var(--surface); }
+  .acc li:nth-child(n+4){ background:var(--beige); }
+  .acc figure{ position:relative; top:-36px; margin:0 0 -10px; width:calc(100% - 56px); height:190px; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .acc figure img{ height:100%; width:auto; max-width:100%; object-fit:contain; }
+  .acc .tx{ width:100%; }
+  .acc h3{ margin:0; font-family:var(--display); font-weight:300; font-size:clamp(1.25rem,1.8vw,1.5rem); line-height:1.12; letter-spacing:-.015em; text-wrap:balance; }
+  .acc p{ margin:14px 0 0; font-size:12.5px; line-height:1.75; color:var(--muted); }
+  @media (max-width:639px){ .acc li{ padding-inline:22px; } .acc figure{ width:calc(100% - 40px); height:170px; } }
+
+  /* ---------- alta · bloque surface con ilustración ---------- */
+  .mb.alta .mb-art{ display:flex; align-items:center; justify-content:center; padding:8px 28px 32px; }
+  @media (min-width:900px){ .mb.alta .mb-art{ padding:40px 48px 40px 0; } }
+  .mb.alta .mb-art img{ min-height:0; height:auto; width:100%; object-fit:contain; }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Pasar al contenido</a>
+
+<header class="site">
+  <div class="bar">
+    <button class="burger" type="button" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span>
+    </button>
+
+    <a class="logo" href="https://www.rolscarpets.com/" aria-label="Alfombras y moquetas Rols">
+      <svg viewBox="0 29.8 128.06 68.5" aria-hidden="true"><path fill="currentColor" d="M80.9 97.7V29.8h3.3v65.1h17.1v2.8H80.9m-15-13.6c.5-2.3.5-4.7 0-7-.2-.7-.4-1.4-.6-2-.8-1.9-2-3.5-3.4-4.9-1.3-1.3-2.9-2.3-4.6-3-.5-.2-1.1-.4-1.7-.6-.8-.2-1.5-.4-2.3-.4-.5-.1-1.1 0-1.6-.1H51c-1.3 0-2.6.2-3.9.5-4.5 1.2-8.5 4.6-10 9.1 0 .1-.1.3-.1.4-.2.8-.4 1.6-.6 2.5 0 .6-.2 1.2-.1 1.8 0 .8.1 1.6.2 2.3.1.7.2 1.4.4 2 0 .1.1.2.1.3 1.4 4.4 5.2 7.9 9.6 9.3.7.2 1.3.4 2 .5.7.1 1.3.1 2 .2.6.1 1.2.1 1.8 0 .4-.1.8 0 1.1-.1.9-.1 1.8-.3 2.7-.6 4.6-1.3 8.6-5.3 9.7-10.2m3.6-7.4c.5 2.5.5 5.2 0 7.7-.2.8-.4 1.5-.7 2.2-1.2 3.2-3.5 5.9-6.2 7.9-1.7 1.3-3.7 2.3-5.8 2.9-.6.2-1.3.3-1.9.4-.5.1-1.1.1-1.6.2-.7 0-1.4 0-2.1.1-.7-.1-1.4-.1-2.1-.1-.3-.1-.7 0-1-.1-1-.1-2-.4-3-.7-4-1.2-7.4-3.9-9.7-7.3-.9-1.4-1.6-2.9-2.1-4.5 0-.1-.1-.2-.1-.3-.2-.7-.4-1.5-.4-2.2-.1-.4-.1-.7-.1-1.1-.1-.2-.1-.4-.1-.7 0-1.8.1-3.6.6-5.3v-.2c.1-.5.3-.9.5-1.4 1-2.6 2.8-4.9 4.9-6.8 2.2-1.9 4.9-3.3 7.8-4 1.1-.3 2.2-.4 3.3-.5h2.9c.1 0 .3 0 .4.1 1.1 0 2.2.3 3.2.5.6.2 1.1.3 1.6.5 2.1.7 4 1.9 5.7 3.3 2.2 1.9 4.1 4.3 5.1 7l.6 1.8c.2.3.3.5.3.6m45-13.1c-2.6.9-4.8 2.9-5.9 5.4-.2.5-.3.9-.4 1.4 0 .2-.1.4-.1.7-.2 1.5-.1 3.1.5 4.6.9 2 2.6 3.5 4.6 4.3.4.2.9.4 1.3.6.6.2 1.1.4 1.7.7 2.2.9 4.6 1.7 6.5 3.3.8.8 1.4 1.8 1.7 2.9.2.9.2 1.8 0 2.7-.2.5-.3 1.1-.6 1.6-.9 1.6-2.5 2.7-4.3 3.2-.8.2-1.6.3-2.4.2-.3-.1-.6-.1-.9-.1-.6-.1-1.3-.3-1.9-.5-2-.8-3.9-2-5.7-3.2v3.9c1 .6 2 1.2 3 1.7.5.2 1 .4 1.6.6.1 0 .3.1.4.1l1.2.3c.2 0 .4.1.5.1.3.1.5.1.8.1.5 0 1 0 1.6.1.7-.1 1.4-.1 2.1-.2.7-.1 1.4-.3 2-.6 2.5-1 4.6-2.9 5.6-5.4.7-1.7.8-3.6.5-5.4-.1-.6-.3-1.1-.5-1.7-.4-1.1-1.1-2.1-2-2.9-1.5-1.4-3.4-2.1-5.2-2.8-.5-.2-1-.4-1.4-.6-1.7-.6-3.5-1.2-5-2.3-1-.7-1.8-1.8-2.1-3 0-.2 0-.3-.1-.5v-1.7c.2-.9.5-1.9 1.1-2.6.7-.9 1.7-1.6 2.8-2.1 1-.4 2-.5 3.1-.5.4.1.7 0 1.1.1 1.2.2 2.4.6 3.5 1.1 1.1.5 2.2 1.1 3.3 1.7v-3.7c-1.4-.7-2.8-1.3-4.3-1.7-.7-.2-1.4-.3-2.1-.4-.9-.2-1.9-.1-2.8-.1-.9.1-1.9.3-2.8.6M17.2 74.4c.5-1.8.3-3.9-.8-5.4-.9-1.2-2.4-1.9-3.8-2.3h-.2c-.8-.2-1.5-.3-2.3-.3H3.6v12.5H10c.4-.1.8 0 1.2-.1 1.3-.1 2.5-.5 3.6-1.1 1-.9 2-2 2.4-3.3m3.6-.1c0 .1-.1.3-.1.4 0 .1-.1.3-.1.4-.6 1.9-2 3.5-3.7 4.5-.6.4-1.3.7-2 1 1.5 1.2 2.7 2.9 3.8 4.5l8.4 12.6h-4c-1.1-1.8-2.4-3.6-3.5-5.4-1.9-2.8-3.5-5.7-5.7-8.2-.5-.5-1-1.1-1.7-1.5-.8-.5-1.8-.7-2.7-.9-.2 0-.5 0-.7-.1-1.8-.1-3.6 0-5.4 0v16.1H0V63.4h9.5c1 .1 1.9.1 2.9.3.7.1 1.4.3 2 .4 1.9.6 3.8 1.6 5 3.3.5.7.9 1.5 1.2 2.3.4 1.4.5 3.1.2 4.6"></path></svg>
+    </a>
+
+    <ul class="tools">
+      <li class="hideS">
+        <a class="pill" href="https://pro.rolscarpets.com/?ulang=1" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg>
+          Rols Pro
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rolscarpets.com/donde-encontrarnos/" target="_blank" rel="noreferrer" aria-label="Dónde comprar" title="Dónde comprar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.5s7-6.1 7-11.1a7 7 0 1 0-14 0c0 5 7 11.1 7 11.1Z"></path><circle cx="12" cy="10.2" r="2.6"></circle></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rolscarpets.com/" aria-label="Buscar" title="Buscar">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M63.7 61.5 47.6 45.4c4.4-4.8 7.1-11.2 7.1-18.2C54.7 12.2 42.5 0 27.5 0S.3 12.2.3 27.2s12.2 27.2 27.2 27.2c6.7 0 12.8-2.5 17.6-6.5L61.2 64l2.5-2.5zM3.8 27.2c0-13 10.6-23.7 23.7-23.7 13 0 23.7 10.6 23.7 23.7 0 13-10.6 23.7-23.7 23.7-13 0-23.7-10.7-23.7-23.7z"></path></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rolscarpets.com/carrito/" aria-label="Carrito" title="Carrito">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+        </a>
+      </li>
+      <li class="hideS">
+        <button class="lang" type="button" aria-label="Idioma">ES
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<button class="scrim" id="scrim" tabindex="-1" aria-hidden="true"></button>
+
+<nav class="drawer" id="drawer" aria-label="Navegación principal">
+  <div class="dscroll">
+    <ul class="dnav">
+      <li><a href="https://www.rolscarpets.com/productos/alfombras-a-medida/"><span>Alfombras a medida</span><svg class="dchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></a></li>
+      <li><a href="https://www.rolscarpets.com/moquetas/"><span>Moquetas</span></a></li>
+      <li><a href="https://www.rolscarpets.com/colecciones/"><span>Colecciones</span></a></li>
+      <li><a href="https://www.rolscarpets.com/proyectos-realizados/"><span>Proyectos</span></a></li>
+      <li><a href="https://www.rolscarpets.com/interioristas/" aria-current="page"><span>Profesionales</span></a></li>
+    </ul>
+    <ul class="dnav dsec">
+      <li><a href="https://www.rolscarpets.com/donde-encontrarnos/"><svg class="dlead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.5s7-6.1 7-11.1a7 7 0 1 0-14 0c0 5 7 11.1 7 11.1Z"></path><circle cx="12" cy="10.2" r="2.6"></circle></svg><span>Dónde comprar</span></a></li>
+      <li><a href="https://www.rolscarpets.com/fabricantes-alfombras-moquetas/"><span>Nuestra casa</span><svg class="dchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></a></li>
+      <li><a href="https://www.rolscarpets.com/recursos3d/"><span>Recursos</span><svg class="dchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></a></li>
+    </ul>
+  </div>
+  <div class="dfoot">
+    <a class="pill" href="https://pro.rolscarpets.com/?ulang=1" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg>Rols Pro</a>
+    <a class="arrow" href="https://www.rolscarpets.com/contacto/">Contacta con nosotros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+  </div>
+</nav>
+
+<main id="contenido">
+
+  <!-- HERO -->
+  <section class="wrap hero pro">
+    <div class="copy">
+      <p class="eyebrow">Servicios para profesionales</p>
+      <h1>Rols Pro: área privada para profesionales</h1>
+      <p class="lead">El área privada para profesionales del interiorismo y la decoración. Calcula presupuestos y envíaselos a tus clientes en segundos, solicita muestras con un clic, consulta el estado de tus pedidos en tiempo real y descarga tus facturas cuando quieras. Todo en un mismo lugar y con prioridad en la gestión de tus pedidos.</p>
+      <div class="heroCtas">
+        <a class="arrow" href="https://www.rolscarpets.com/contacto/">Solicita tu acceso a Rols Pro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+        <a class="arrow quiet" href="https://pro.rolscarpets.com/?ulang=1" target="_blank" rel="noopener">Accede a tu cuenta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+      </div>
+    </div>
+    <div class="heroArt">
+      <img src="https://www.rolscarpets.com/wp-content/uploads/2024/12/Rols_Pro_02-1024x709.webp" srcset="https://www.rolscarpets.com/wp-content/uploads/2024/12/Rols_Pro_02-1024x709.webp 1024w, https://www.rolscarpets.com/wp-content/uploads/2024/12/Rols_Pro_02.webp 2172w" sizes="(min-width:900px) 55vw, 100vw" width="2172" height="1503" alt="Calculadora de presupuestos del área privada Rols Pro sobre una alfombra Rols" fetchpriority="high" decoding="async">
+    </div>
+  </section>
+
+  <!-- A QUÉ TENDRÁS ACCESO -->
+  <section class="wrap sec">
+    <div class="accHead">
+      <h2>¿A qué tendrás acceso?</h2>
+      <p class="lead">Todas las herramientas que necesitas para vender mejor y gestionar tus pedidos de alfombras a medida de manera rápida y sencilla</p>
+    </div>
+    <ul class="acc">
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-35.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Obtén precios al instante y visualiza cómo quedarán tus alfombras</h3>
+          <p>Con nuestra herramienta intuitiva, ya no tendrás que preocuparte por aprender sobre mermas, detalles especiales de confección o los acabados adecuados para cada colección. Simplemente introduce las medidas, selecciona el acabado que desees y obtén un presupuesto instantáneo junto con el precio de venta recomendado para tus clientes y tu margen.</p>
+        </div>
+      </li>
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-38.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Guarda borradores de presupuestos para cuando los necesites</h3>
+          <p>Guarda borradores de tus presupuestos de forma segura y accede a ellos siempre que los necesites. Mantén tus propuestas organizadas y listas para consultar, editar o enviar en el momento ideal, sin perder ningún detalle.</p>
+        </div>
+      </li>
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-36.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Muestras de tejidos gratuitas a un click con envío en 24h</h3>
+          <p>Como cliente de Rols ya tienes acceso a solicitar muestras gratuitas para valorar calidad, tacto y diseño. Con el área privada es lo mismo pero más rápido ya que entran directamente nuestro sistema, les damos prioridad y además es mucho más cómodo para ti.</p>
+        </div>
+      </li>
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-34.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Atención preferente a tus pedidos y seguimiento en tiempo real</h3>
+          <p>Gestiona tus pedidos directamente y sigue cada etapa en tiempo real. Desde la confirmación hasta la salida de fábrica, mantente siempre informado sobre el progreso de tus alfombras a medida, sin intermediarios ni esperas. Además, tus pedidos tienen prioridad en la gestión, garantizando máxima rapidez y eficiencia en cada proceso.</p>
+        </div>
+      </li>
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-39.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Accede a tu histórico de pedidos y facturas en cualquier momento</h3>
+          <p>Accede fácilmente a tu histórico de pedidos y facturas en cualquier momento. Mantén todo tu historial de compras organizado y a un clic de distancia, para que puedas consultar, descargar o gestionar tus documentos sin complicaciones.</p>
+        </div>
+      </li>
+      <li>
+        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-37.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
+        <div class="tx">
+          <h3>Gestiona tus propios usuarios y tiendas</h3>
+          <p>Gestiona de forma autónoma tus propios usuarios y tiendas desde una sola plataforma. Añade o elimina usuarios, asigna permisos específicos y administra las tiendas de tu red sin complicaciones. Esta funcionalidad te ofrece total control y flexibilidad para organizar tu equipo y puntos de venta.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ALTA · bloque surface -->
+  <section class="wrap sec">
+    <div class="mb alta">
+      <div class="mb-txt">
+        <p class="eyebrow">Acceso inmediato para clientes</p>
+        <h2>Empieza ya a disfrutar de las ventajas del área privada Rols Pro</h2>
+        <p class="body">Una vez realizada tu alta, tu asesor te ofrecerá un recorrido completo por las herramientas y funcionalidades de la plataforma, asegurándose de que aproveches al máximo todas las ventajas.</p>
+        <div class="heroCtas">
+          <a class="arrow" href="https://www.rolscarpets.com/contacto/">Solicita tu acceso a Rols Pro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+        </div>
+      </div>
+      <figure class="mb-art">
+        <img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-33-1024x673.png" srcset="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-33-1024x673.png 1024w, https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-33.png 1519w" sizes="(min-width:900px) 45vw, 100vw" width="1519" height="998" alt="Pantallas del área privada Rols Pro: pedidos facturados, muestras y seguimiento" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- BANNER B CORP -->
+  <section class="bcorp">
+    <div class="wrap bcorp-inner">
+      <div class="bcorp-txt">
+        <p class="bcorp-h">Somos la primera empresa de alfombras certificada B Corp en Europa</p>
+        <a class="arrow bcorp-cta" href="https://www.rolscarpets.com/la-sostenibilidad-en-nuestro-adn/" target="_blank" rel="noreferrer">La sostenibilidad en nuestro ADN <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+      </div>
+      <svg class="bcorp-seal" viewBox="0 0 136.9 200.1" role="img" aria-label="Sello Certified B Corporation" fill="currentColor"><g><g><path d="M48.3,66.9h20c4.9,0,11.3,0,14.6,2c3.6,2.2,6.5,6.1,6.5,11.5c0,5.9-3.1,10.3-8.2,12.3v0.2c6.8,1.4,10.5,6.5,10.5,13.3
+      c0,8.1-5.8,15.8-16.7,15.8H48.3V66.9z M55.6,90.6h14.7c8.3,0,11.7-3,11.7-8.8c0-7.6-5.4-8.7-11.7-8.7H55.6V90.6z M55.6,115.8H74
+      c6.3,0,10.3-3.9,10.3-9.9c0-7.2-5.8-9.2-12-9.2H55.6V115.8z"></path><path d="M110.4,94.5c0,23.1-18.8,41.9-41.9,41.9c-23.1,0-41.9-18.8-41.9-41.9s18.8-41.9,41.9-41.9
+      C91.6,52.6,110.4,71.3,110.4,94.5z M68.5,46.2c-26.7,0-48.3,21.6-48.3,48.3s21.6,48.3,48.3,48.3c26.7,0,48.3-21.6,48.3-48.3
+      C116.7,67.8,95.1,46.2,68.5,46.2z"></path></g><g><rect x="20.3" y="152.9" width="96.3" height="6.3"></rect><path d="M113.6,145.9c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2-0.1,0.2-0.2c0.1-0.1,0.1-0.2,0.1-0.3c0-0.1,0-0.2-0.1-0.3
+      c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.2,0-0.3,0h-0.7v1.1L113.6,145.9L113.6,145.9z M113.8,144.4
+      c0.4,0,0.7,0.1,0.9,0.2c0.2,0.2,0.3,0.4,0.3,0.7c0,0.3-0.1,0.5-0.2,0.7c-0.2,0.1-0.4,0.2-0.6,0.2l1,1.5h-0.6l-0.9-1.4h-0.6v1.4
+      h-0.5v-3.4L113.8,144.4L113.8,144.4z M111.5,147.1c0.1,0.3,0.3,0.6,0.5,0.8c0.2,0.2,0.5,0.4,0.8,0.5c0.3,0.1,0.6,0.2,0.9,0.2
+      c0.3,0,0.7-0.1,0.9-0.2c0.3-0.1,0.5-0.3,0.8-0.5s0.4-0.5,0.5-0.8c0.1-0.3,0.2-0.6,0.2-1s-0.1-0.7-0.2-1c-0.1-0.3-0.3-0.6-0.5-0.8
+      c-0.2-0.2-0.5-0.4-0.8-0.5s-0.6-0.2-0.9-0.2s-0.7,0.1-0.9,0.2c-0.3,0.1-0.6,0.3-0.8,0.5c-0.2,0.2-0.4,0.5-0.5,0.8s-0.2,0.6-0.2,1
+      C111.3,146.5,111.4,146.8,111.5,147.1 M111,145c0.2-0.4,0.4-0.6,0.6-0.9s0.6-0.4,0.9-0.6c0.3-0.1,0.7-0.2,1.1-0.2
+      c0.4,0,0.8,0.1,1.1,0.2c0.3,0.1,0.7,0.3,0.9,0.6c0.3,0.3,0.5,0.6,0.6,0.9c0.2,0.4,0.2,0.7,0.2,1.1s-0.1,0.8-0.2,1.1
+      c-0.2,0.4-0.4,0.7-0.6,0.9c-0.3,0.3-0.6,0.5-0.9,0.6c-0.4,0.1-0.7,0.2-1.1,0.2c-0.4,0-0.8-0.1-1.1-0.2c-0.3-0.1-0.7-0.3-0.9-0.6
+      c-0.3-0.3-0.5-0.6-0.6-0.9c-0.2-0.4-0.2-0.7-0.2-1.1C110.8,145.7,110.8,145.3,111,145"></path></g><g><path d="M32,25c-0.2-0.4-0.5-0.7-0.9-1c-0.3-0.3-0.7-0.5-1.2-0.6c-0.4-0.1-0.9-0.2-1.4-0.2c-0.9,0-1.6,0.2-2.2,0.5
+      C25.8,24,25.3,24.4,25,25c-0.4,0.6-0.6,1.2-0.8,1.9s-0.3,1.5-0.3,2.2c0,0.7,0.1,1.4,0.3,2.1c0.2,0.7,0.4,1.3,0.8,1.9
+      c0.4,0.5,0.9,1,1.5,1.3c0.6,0.3,1.3,0.5,2.2,0.5c1.2,0,2.1-0.4,2.7-1.1c0.7-0.7,1.1-1.7,1.2-2.8h3.7c-0.1,1.1-0.3,2.1-0.8,2.9
+      c-0.4,0.9-0.9,1.6-1.6,2.2c-0.7,0.6-1.5,1.1-2.3,1.4c-0.9,0.3-1.9,0.5-3,0.5c-1.3,0-2.5-0.2-3.6-0.7c-1.1-0.5-2-1.1-2.7-1.9
+      c-0.7-0.8-1.3-1.8-1.7-2.9c-0.4-1.1-0.6-2.3-0.6-3.5c0-1.3,0.2-2.5,0.6-3.6c0.4-1.1,1-2.1,1.7-2.9c0.7-0.8,1.6-1.5,2.7-2
+      c1.1-0.5,2.3-0.7,3.6-0.7c1,0,1.9,0.1,2.7,0.4c0.9,0.3,1.6,0.7,2.3,1.2c0.7,0.5,1.2,1.2,1.7,2c0.4,0.8,0.7,1.7,0.8,2.7h-3.7
+      C32.3,25.7,32.2,25.3,32,25z"></path><path d="M41.3,34.7c0.5,0.5,1.3,0.8,2.2,0.8c0.7,0,1.3-0.2,1.8-0.5c0.5-0.3,0.8-0.7,0.9-1.1h3c-0.5,1.5-1.2,2.6-2.2,3.2
+      s-2.2,1-3.7,1c-1,0-1.9-0.2-2.7-0.5c-0.8-0.3-1.5-0.8-2-1.3c-0.5-0.6-1-1.3-1.3-2.1c-0.3-0.8-0.5-1.7-0.5-2.7
+      c0-0.9,0.2-1.8,0.5-2.6c0.3-0.8,0.8-1.5,1.3-2.1s1.2-1.1,2-1.4s1.7-0.5,2.6-0.5c1.1,0,2,0.2,2.8,0.6c0.8,0.4,1.5,1,2,1.7
+      s0.9,1.5,1.1,2.4s0.3,1.8,0.2,2.8h-9.1C40.5,33.4,40.7,34.2,41.3,34.7z M45.2,28.1c-0.4-0.5-1-0.7-1.9-0.7c-0.5,0-1,0.1-1.4,0.3
+      c-0.4,0.2-0.7,0.4-0.9,0.7c-0.2,0.3-0.4,0.6-0.5,0.9s-0.1,0.6-0.2,0.8H46C45.9,29.2,45.6,28.5,45.2,28.1z"></path><path d="M54.4,25.1v2.3h0c0.2-0.4,0.4-0.8,0.7-1.1c0.3-0.3,0.6-0.6,1-0.9s0.7-0.4,1.2-0.5s0.8-0.2,1.3-0.2c0.2,0,0.5,0,0.8,0.1
+      v3.2c-0.2,0-0.4-0.1-0.6-0.1s-0.5,0-0.7,0c-0.6,0-1.2,0.1-1.6,0.3c-0.4,0.2-0.8,0.5-1.1,0.9s-0.5,0.8-0.6,1.3s-0.2,1-0.2,1.6v5.7
+      h-3.5V25.1H54.4z"></path><path d="M68.5,25.1v2.3h-2.5v6.2c0,0.6,0.1,1,0.3,1.2s0.6,0.3,1.2,0.3c0.2,0,0.4,0,0.6,0c0.2,0,0.3,0,0.5-0.1v2.7
+      c-0.3,0-0.6,0.1-1,0.1c-0.4,0-0.7,0-1.1,0c-0.5,0-1.1,0-1.5-0.1c-0.5-0.1-0.9-0.2-1.3-0.4c-0.4-0.2-0.7-0.5-0.9-0.9
+      c-0.2-0.4-0.3-0.9-0.3-1.5v-7.4h-2.1v-2.3h2.1v-3.8h3.5v3.8L68.5,25.1L68.5,25.1z"></path><path d="M70.5,23.2v-2.9h3.5v2.9H70.5z M73.9,25.1v12.6h-3.5V25.1H73.9z"></path><path d="M75.3,27.5v-2.3h2.1v-1c0-1.1,0.3-2,1.1-2.8c0.7-0.7,1.8-1.1,3.2-1.1c0.3,0,0.6,0,0.9,0c0.3,0,0.6,0,0.9,0.1V23
+      c-0.4,0-0.8-0.1-1.3-0.1c-0.5,0-0.8,0.1-1,0.3c-0.2,0.2-0.3,0.6-0.3,1.1v0.8h2.4v2.3h-2.4v10.3h-3.5V27.5L75.3,27.5L75.3,27.5z"></path><path d="M85.6,23.2v-2.9h3.5v2.9H85.6z M89.1,25.1v12.6h-3.5V25.1H89.1z"></path><path d="M94.5,34.7c0.5,0.5,1.3,0.8,2.2,0.8c0.7,0,1.3-0.2,1.8-0.5c0.5-0.3,0.8-0.7,0.9-1.1h3.1c-0.5,1.5-1.2,2.6-2.2,3.2
+      c-1,0.7-2.2,1-3.7,1c-1,0-1.9-0.2-2.7-0.5c-0.8-0.3-1.5-0.8-2-1.3c-0.6-0.6-1-1.3-1.3-2.1c-0.3-0.8-0.4-1.7-0.4-2.7
+      c0-0.9,0.2-1.8,0.5-2.6c0.3-0.8,0.8-1.5,1.3-2.1s1.2-1.1,2-1.4s1.7-0.5,2.6-0.5c1.1,0,2,0.2,2.8,0.6c0.8,0.4,1.4,1,2,1.7
+      s0.9,1.5,1.1,2.4s0.3,1.8,0.2,2.8h-9.1C93.7,33.4,94,34.2,94.5,34.7z M98.4,28.1c-0.4-0.5-1.1-0.7-1.9-0.7c-0.6,0-1,0.1-1.4,0.3
+      c-0.4,0.2-0.7,0.4-0.9,0.7c-0.2,0.3-0.4,0.6-0.5,0.9s-0.1,0.6-0.2,0.8h5.6C99.2,29.2,98.9,28.5,98.4,28.1z"></path><path d="M113.3,36.1c-0.4,0.7-0.9,1.2-1.6,1.5c-0.7,0.3-1.4,0.5-2.2,0.5c-0.9,0-1.8-0.2-2.5-0.5s-1.3-0.9-1.8-1.5
+      s-0.8-1.3-1.1-2.2c-0.2-0.8-0.3-1.7-0.3-2.5c0-0.9,0.1-1.7,0.3-2.5c0.2-0.8,0.6-1.5,1.1-2.1c0.5-0.6,1.1-1.1,1.7-1.5
+      c0.7-0.4,1.5-0.5,2.4-0.5c0.8,0,1.5,0.2,2.1,0.5c0.7,0.3,1.2,0.8,1.6,1.4h0.1v-6.3h3.5v17.4h-3.3L113.3,36.1
+      C113.3,36.1,113.3,36.1,113.3,36.1z M113.2,29.9c-0.1-0.5-0.3-0.9-0.5-1.3s-0.5-0.7-0.9-0.9c-0.4-0.2-0.8-0.3-1.4-0.3
+      s-1.1,0.1-1.4,0.3s-0.7,0.5-0.9,0.9c-0.2,0.4-0.4,0.8-0.5,1.3c-0.1,0.5-0.2,1-0.2,1.5c0,0.5,0.1,1,0.2,1.5
+      c0.1,0.5,0.3,0.9,0.6,1.3c0.2,0.4,0.6,0.7,0.9,0.9s0.8,0.3,1.4,0.3c0.6,0,1-0.1,1.4-0.3c0.4-0.2,0.7-0.5,0.9-0.9
+      c0.2-0.4,0.4-0.8,0.5-1.3c0.1-0.5,0.2-1,0.2-1.5C113.3,30.9,113.2,30.4,113.2,29.9z"></path></g><g><path d="M28.8,171.7c-0.2-1.2-1.3-2.1-2.7-2.1c-2.4,0-3.3,2.1-3.3,4.2c0,2,0.9,4.1,3.3,4.1c1.6,0,2.6-1.1,2.8-2.8h2.6
+      c-0.3,3.1-2.4,5-5.4,5c-3.8,0-6-2.8-6-6.4c0-3.6,2.2-6.5,6-6.5c2.7,0,5,1.6,5.3,4.4L28.8,171.7L28.8,171.7z"></path><path d="M37.1,170.7c2.8,0,4.6,1.9,4.6,4.7c0,2.8-1.8,4.7-4.6,4.7c-2.8,0-4.6-1.9-4.6-4.7C32.5,172.6,34.3,170.7,37.1,170.7z
+      M37.1,178.2c1.7,0,2.2-1.4,2.2-2.8c0-1.4-0.5-2.9-2.2-2.9c-1.7,0-2.2,1.4-2.2,2.9C35,176.8,35.5,178.2,37.1,178.2z"></path><path d="M43.2,170.9h2.3v1.6h0c0.4-1.1,1.7-1.9,2.8-1.9c0.2,0,0.4,0,0.5,0.1v2.3c-0.2-0.1-0.6-0.1-0.9-0.1c-1.8,0-2.4,1.3-2.4,2.9
+      v4h-2.4V170.9z"></path><path d="M49.9,170.9h2.3v1.1h0c0.6-0.9,1.5-1.4,2.6-1.4c2.8,0,4,2.2,4,4.8c0,2.4-1.3,4.6-3.9,4.6c-1.1,0-2.1-0.5-2.7-1.3h0v4.2
+      h-2.4L49.9,170.9L49.9,170.9z M56.5,175.4c0-1.4-0.6-2.9-2.1-2.9c-1.6,0-2.1,1.4-2.1,2.9s0.5,2.8,2.1,2.8
+      C56,178.2,56.5,176.8,56.5,175.4z"></path><path d="M64.3,170.7c2.8,0,4.6,1.9,4.6,4.7c0,2.8-1.8,4.7-4.6,4.7c-2.8,0-4.6-1.9-4.6-4.7C59.7,172.6,61.5,170.7,64.3,170.7z
+      M64.3,178.2c1.7,0,2.2-1.4,2.2-2.8c0-1.4-0.5-2.9-2.2-2.9c-1.7,0-2.2,1.4-2.2,2.9C62.1,176.8,62.6,178.2,64.3,178.2z"></path><path d="M70.4,170.9h2.3v1.6h0c0.4-1.1,1.7-1.9,2.8-1.9c0.2,0,0.4,0,0.5,0.1v2.3c-0.2-0.1-0.6-0.1-0.9-0.1c-1.8,0-2.4,1.3-2.4,2.9
+      v4h-2.4L70.4,170.9L70.4,170.9z"></path><path d="M76.8,173.7c0.1-2.3,2.2-3,4.2-3c1.8,0,3.9,0.4,3.9,2.5v4.6c0,0.8,0.1,1.6,0.3,2h-2.5c-0.1-0.3-0.2-0.6-0.2-0.9
+      c-0.8,0.8-1.9,1.1-3,1.1c-1.7,0-3-0.8-3-2.7c0-2,1.5-2.5,3-2.7c1.5-0.2,2.9-0.2,2.9-1.2c0-1.1-0.7-1.2-1.6-1.2
+      c-0.9,0-1.5,0.4-1.6,1.3H76.8z M82.5,175.5c-0.4,0.4-1.3,0.4-2,0.5c-0.8,0.1-1.4,0.4-1.4,1.3c0,0.9,0.7,1.1,1.5,1.1
+      c1.9,0,2-1.5,2-2L82.5,175.5L82.5,175.5z"></path><path d="M89.8,170.9h1.8v1.6h-1.8v4.4c0,0.8,0.2,1,1,1c0.3,0,0.5,0,0.8-0.1v1.9c-0.4,0.1-0.9,0.1-1.4,0.1c-1.5,0-2.8-0.4-2.8-2.1
+      v-5.2h-1.5v-1.6h1.5v-2.7h2.4V170.9z"></path><path d="M95.9,169.6h-2.4v-2h2.4V169.6z M93.5,170.9h2.4v8.9h-2.4V170.9z"></path><path d="M102.1,170.7c2.8,0,4.6,1.9,4.6,4.7c0,2.8-1.8,4.7-4.6,4.7c-2.8,0-4.6-1.9-4.6-4.7C97.5,172.6,99.3,170.7,102.1,170.7z
+      M102.1,178.2c1.7,0,2.2-1.4,2.2-2.8c0-1.4-0.5-2.9-2.2-2.9c-1.7,0-2.2,1.4-2.2,2.9C100,176.8,100.5,178.2,102.1,178.2z"></path><path d="M108.3,170.9h2.3v1.2h0.1c0.6-1,1.7-1.5,2.7-1.5c2.6,0,3.2,1.5,3.2,3.7v5.5h-2.4v-5c0-1.5-0.4-2.2-1.6-2.2
+      c-1.3,0-1.9,0.7-1.9,2.6v4.7h-2.4L108.3,170.9L108.3,170.9z"></path></g></g><g></g></svg>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap fcols">
+    <div class="fbrand">
+      <svg viewBox="0 29.8 128.06 68.5" aria-hidden="true"><path fill="currentColor" d="M80.9 97.7V29.8h3.3v65.1h17.1v2.8H80.9m-15-13.6c.5-2.3.5-4.7 0-7-.2-.7-.4-1.4-.6-2-.8-1.9-2-3.5-3.4-4.9-1.3-1.3-2.9-2.3-4.6-3-.5-.2-1.1-.4-1.7-.6-.8-.2-1.5-.4-2.3-.4-.5-.1-1.1 0-1.6-.1H51c-1.3 0-2.6.2-3.9.5-4.5 1.2-8.5 4.6-10 9.1 0 .1-.1.3-.1.4-.2.8-.4 1.6-.6 2.5 0 .6-.2 1.2-.1 1.8 0 .8.1 1.6.2 2.3.1.7.2 1.4.4 2 0 .1.1.2.1.3 1.4 4.4 5.2 7.9 9.6 9.3.7.2 1.3.4 2 .5.7.1 1.3.1 2 .2.6.1 1.2.1 1.8 0 .4-.1.8 0 1.1-.1.9-.1 1.8-.3 2.7-.6 4.6-1.3 8.6-5.3 9.7-10.2m3.6-7.4c.5 2.5.5 5.2 0 7.7-.2.8-.4 1.5-.7 2.2-1.2 3.2-3.5 5.9-6.2 7.9-1.7 1.3-3.7 2.3-5.8 2.9-.6.2-1.3.3-1.9.4-.5.1-1.1.1-1.6.2-.7 0-1.4 0-2.1.1-.7-.1-1.4-.1-2.1-.1-.3-.1-.7 0-1-.1-1-.1-2-.4-3-.7-4-1.2-7.4-3.9-9.7-7.3-.9-1.4-1.6-2.9-2.1-4.5 0-.1-.1-.2-.1-.3-.2-.7-.4-1.5-.4-2.2-.1-.4-.1-.7-.1-1.1-.1-.2-.1-.4-.1-.7 0-1.8.1-3.6.6-5.3v-.2c.1-.5.3-.9.5-1.4 1-2.6 2.8-4.9 4.9-6.8 2.2-1.9 4.9-3.3 7.8-4 1.1-.3 2.2-.4 3.3-.5h2.9c.1 0 .3 0 .4.1 1.1 0 2.2.3 3.2.5.6.2 1.1.3 1.6.5 2.1.7 4 1.9 5.7 3.3 2.2 1.9 4.1 4.3 5.1 7l.6 1.8c.2.3.3.5.3.6m45-13.1c-2.6.9-4.8 2.9-5.9 5.4-.2.5-.3.9-.4 1.4 0 .2-.1.4-.1.7-.2 1.5-.1 3.1.5 4.6.9 2 2.6 3.5 4.6 4.3.4.2.9.4 1.3.6.6.2 1.1.4 1.7.7 2.2.9 4.6 1.7 6.5 3.3.8.8 1.4 1.8 1.7 2.9.2.9.2 1.8 0 2.7-.2.5-.3 1.1-.6 1.6-.9 1.6-2.5 2.7-4.3 3.2-.8.2-1.6.3-2.4.2-.3-.1-.6-.1-.9-.1-.6-.1-1.3-.3-1.9-.5-2-.8-3.9-2-5.7-3.2v3.9c1 .6 2 1.2 3 1.7.5.2 1 .4 1.6.6.1 0 .3.1.4.1l1.2.3c.2 0 .4.1.5.1.3.1.5.1.8.1.5 0 1 0 1.6.1.7-.1 1.4-.1 2.1-.2.7-.1 1.4-.3 2-.6 2.5-1 4.6-2.9 5.6-5.4.7-1.7.8-3.6.5-5.4-.1-.6-.3-1.1-.5-1.7-.4-1.1-1.1-2.1-2-2.9-1.5-1.4-3.4-2.1-5.2-2.8-.5-.2-1-.4-1.4-.6-1.7-.6-3.5-1.2-5-2.3-1-.7-1.8-1.8-2.1-3 0-.2 0-.3-.1-.5v-1.7c.2-.9.5-1.9 1.1-2.6.7-.9 1.7-1.6 2.8-2.1 1-.4 2-.5 3.1-.5.4.1.7 0 1.1.1 1.2.2 2.4.6 3.5 1.1 1.1.5 2.2 1.1 3.3 1.7v-3.7c-1.4-.7-2.8-1.3-4.3-1.7-.7-.2-1.4-.3-2.1-.4-.9-.2-1.9-.1-2.8-.1-.9.1-1.9.3-2.8.6M17.2 74.4c.5-1.8.3-3.9-.8-5.4-.9-1.2-2.4-1.9-3.8-2.3h-.2c-.8-.2-1.5-.3-2.3-.3H3.6v12.5H10c.4-.1.8 0 1.2-.1 1.3-.1 2.5-.5 3.6-1.1 1-.9 2-2 2.4-3.3m3.6-.1c0 .1-.1.3-.1.4 0 .1-.1.3-.1.4-.6 1.9-2 3.5-3.7 4.5-.6.4-1.3.7-2 1 1.5 1.2 2.7 2.9 3.8 4.5l8.4 12.6h-4c-1.1-1.8-2.4-3.6-3.5-5.4-1.9-2.8-3.5-5.7-5.7-8.2-.5-.5-1-1.1-1.7-1.5-.8-.5-1.8-.7-2.7-.9-.2 0-.5 0-.7-.1-1.8-.1-3.6 0-5.4 0v16.1H0V63.4h9.5c1 .1 1.9.1 2.9.3.7.1 1.4.3 2 .4 1.9.6 3.8 1.6 5 3.3.5.7.9 1.5 1.2 2.3.4 1.4.5 3.1.2 4.6"></path></svg>
+      <a class="fcontact" href="https://www.rolscarpets.com/contacto/" target="_blank" rel="noreferrer">Contacta con nosotros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg></a>
+      <ul class="fcontact-list">
+        <li><a href="mailto:info@rolscarpets.com">info@rolscarpets.com</a></li>
+        <li><a href="tel:+34965400979">+34 965 40 09 79</a></li>
+      </ul>
+      <ul class="fsocial">
+        <li><a href="https://www.instagram.com/rolscarpets/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></rect><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></circle><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor"></circle></svg></a></li>
+        <li><a href="https://www.pinterest.es/rolscarpets" target="_blank" rel="noreferrer" aria-label="Pinterest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M10.2 17.6 12.1 8.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.4 11.9c0-2 1.6-3.5 3.6-3.5 1.8 0 3 1.1 3 2.8 0 2-1.3 3.6-3 3.6-.8 0-1.5-.4-1.8-1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></li>
+        <li><a href="https://www.linkedin.com/company/rols-carpets/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></rect><circle cx="7.6" cy="7.8" r="0.95" fill="currentColor"></circle><path d="M7.6 10.8v6.4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.6 17.2v-6.4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.6 13.4c0-1.6 1-2.6 2.4-2.6s2.4 1 2.4 2.6v3.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Alfombras a medida</h4>
+      <ul>
+        <li><a href="https://www.rolscarpets.com/productos/alfombras-a-medida/">Ver todas las alfombras</a></li>
+        <li><a href="https://www.rolscarpets.com/colecciones/">Colecciones</a></li>
+        <li><a href="https://www.rolscarpets.com/moquetas/">Moquetas</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Profesionales</h4>
+      <ul>
+        <li><a href="https://pro.rolscarpets.com/?ulang=1" target="_blank" rel="noreferrer">Rols Pro</a></li>
+        <li><a href="https://www.rolscarpets.com/proyectos-realizados/">Proyectos</a></li>
+        <li><a href="https://www.rolscarpets.com/donde-encontrarnos/">Dónde comprar</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Recursos</h4>
+      <ul>
+        <li><a href="https://www.rolscarpets.com/recursos3d/">Recursos 3D</a></li>
+        <li><a href="https://www.rolscarpets.com/catalogos/">Catálogos</a></li>
+        <li><a href="https://www.rolscarpets.com/guia-de-medidas/">Guía de medidas</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flegal">
+    <span>© 2026 Moquetas Rols, S.A.</span>
+    <ul>
+      <li><a href="https://www.rolscarpets.com/aviso-legal/">Aviso legal</a></li>
+      <li><a href="https://www.rolscarpets.com/politica-cookies/">Política de cookies</a></li>
+      <li><a href="https://www.rolscarpets.com/politica-de-privacidad/">Política de privacidad</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var burger = document.getElementById('burger');
+    var drawer = document.getElementById('drawer');
+    var scrim = document.getElementById('scrim');
+    function setOpen(open) {
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawer.classList.toggle('open', open);
+      scrim.classList.toggle('open', open);
+      scrim.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    if (burger) {
+      burger.addEventListener('click', function () { setOpen(burger.getAttribute('aria-expanded') !== 'true'); });
+      scrim.addEventListener('click', function () { setOpen(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+      drawer.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+    }
+
+  })();
+</script>
+</body>
+</html>
