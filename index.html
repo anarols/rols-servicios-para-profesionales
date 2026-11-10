@@ -287,26 +287,46 @@
     .hero.pro .heroArt > img{ aspect-ratio:auto; max-height:calc(100svh - var(--cabecera) - 72px); }
   }
 
-  /* ---------- accesos · tarjetas en dos tonos con pastilla blanca centrada ---------- */
+  /* ---------- accesos · fila de tiles (opción 27, transición tipo Vibia) ---------- */
   .accHead{ display:grid; gap:14px 56px; align-items:end; }
   @media (min-width:900px){ .accHead{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); } .accHead .lead{ max-width:52ch; justify-self:end; text-align:right; } }
-  .acc{ list-style:none; margin:40px 0 0; padding:0; display:grid; grid-template-columns:minmax(0,1fr); gap:64px 24px; }
-  @media (min-width:640px){ .acc{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (min-width:1024px){ .acc{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:64px 28px; } }
-  .acc li{ position:relative; margin-top:36px; border-radius:16px; padding:0 28px 32px; display:flex; flex-direction:column; align-items:center; }
-  .acc li:nth-child(-n+3){ background:var(--surface); }
-  .acc li:nth-child(n+4){ background:var(--beige); }
-  .acc figure{ position:relative; top:-36px; margin:0 0 -10px; width:calc(100% - 56px); height:190px; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-  .acc figure img{ height:100%; width:auto; max-width:100%; object-fit:contain; }
-  .acc .tx{ width:100%; }
-  .acc h3{ margin:0; font-family:var(--display); font-weight:300; font-size:clamp(1.25rem,1.8vw,1.5rem); line-height:1.12; letter-spacing:-.015em; text-wrap:balance; }
-  .acc p{ margin:14px 0 0; font-size:12.5px; line-height:1.75; color:var(--muted); }
-  @media (max-width:639px){ .acc li{ padding-inline:22px; } .acc figure{ width:calc(100% - 40px); height:170px; } }
+  .tiles{ --ease:cubic-bezier(.25,.8,.25,1); list-style:none; margin:40px 0 0; padding:0; display:flex; flex-direction:column; gap:12px; }
+  .tiles li{ position:relative; min-width:0; background:var(--surface); border-radius:12px; padding:18px 20px; cursor:pointer; overflow:hidden; outline-offset:3px; transition:background-color .6s ease; }
+  .tiles li:focus-visible{ outline:1.5px solid #333a3c; }
+  .tiles .foot{ display:flex; align-items:center; gap:14px; }
+  .tiles .ic{ width:22px; height:22px; flex:none; color:#333a3c; }
+  .tiles .ic svg{ width:22px; height:22px; display:block; }
+  .tiles .lab{ font-family:var(--sans); font-size:13px; line-height:1.35; color:#333a3c; }
+  .tiles .body{ display:none; flex-direction:column; align-items:flex-start; gap:12px; }
+  .tiles .body .eyebrow{ margin:0; }
+  .tiles .body h3{ margin:0; font-family:var(--display); font-weight:300; font-size:clamp(1.6rem,2.3vw,2rem); line-height:1.08; letter-spacing:-.015em; text-wrap:balance; }
+  .tiles .body .tx{ margin:0; font-size:13px; line-height:1.7; color:var(--muted); }
+  .tiles li.on{ background:var(--beige); cursor:default; padding:24px 22px 26px; }
+  .tiles li.on .foot{ display:none; }
+  .tiles li.on .body{ display:flex; }
 
+  @media (min-width:1100px){
+    .tiles{ flex-direction:row; }
+    .tiles li{ flex:1 1 0; height:450px; padding:0; transition:flex-grow 1s var(--ease), background-color .6s ease; }
+    .tiles li.on{ flex-grow:2.6; padding:0; }
+    /* etiqueta de la tile cerrada: abajo; al abrirse baja y se desvanece */
+    .tiles .foot, .tiles li.on .foot{ display:flex; position:absolute; left:22px; right:16px; bottom:22px; flex-direction:column; align-items:flex-start; gap:12px; transition:transform .7s var(--ease) .25s, opacity .5s ease .3s; }
+    .tiles li.on .foot{ transform:translateY(48px); opacity:0; transition:transform .45s ease-in, opacity .25s ease; }
+    /* contenido de la tile abierta: ancho fijo (no se recoloca mientras crece) y entra desde abajo, recortado */
+    .tiles .body, .tiles li.on .body{ display:flex; position:absolute; left:32px; top:50%; width:270px; transform:translateY(calc(-50% + 300px)); opacity:0; transition:transform .45s ease-in, opacity .3s ease; }
+    .tiles li.on .body{ transform:translateY(-50%); opacity:1; transition:transform 1s var(--ease), opacity .6s ease; }
+  }
+  @media (min-width:1280px){ .tiles .body, .tiles li.on .body{ left:36px; width:320px; } }
+  @media (prefers-reduced-motion:reduce){ .tiles li, .tiles .foot, .tiles .body{ transition:none !important; } }
   /* ---------- alta · bloque surface con ilustración ---------- */
   .mb.alta .mb-art{ display:flex; align-items:center; justify-content:center; padding:8px 28px 32px; }
   @media (min-width:900px){ .mb.alta .mb-art{ padding:40px 48px 40px 0; } }
   .mb.alta .mb-art img{ min-height:0; height:auto; width:100%; object-fit:contain; }
+
+  /* colores · opción M: todas en blanco con línea fina; la abierta con la línea en arena */
+  .tiles li{ background:#fff; box-shadow:inset 0 0 0 1px rgba(51,58,60,.14); transition:background-color .6s ease, box-shadow .6s ease; }
+  .tiles li.on{ background:#fff; box-shadow:inset 0 0 0 1px #D5B38C; }
+  @media (min-width:1100px){ .tiles li{ transition:flex-grow 1s var(--ease), background-color .6s ease, box-shadow .6s ease; } }
 </style>
 </head>
 <body>
@@ -400,47 +420,53 @@
       <h2>¿A qué tendrás acceso?</h2>
       <p class="lead">Todas las herramientas que necesitas para vender mejor y gestionar tus pedidos de alfombras a medida de manera rápida y sencilla</p>
     </div>
-    <ul class="acc">
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-35.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Obtén precios al instante y visualiza cómo quedarán tus alfombras</h3>
-          <p>Con nuestra herramienta intuitiva, ya no tendrás que preocuparte por aprender sobre mermas, detalles especiales de confección o los acabados adecuados para cada colección. Simplemente introduce las medidas, selecciona el acabado que desees y obtén un presupuesto instantáneo junto con el precio de venta recomendado para tus clientes y tu margen.</p>
+    <ul class="tiles" id="tiles">
+      <li class="on" tabindex="0" aria-expanded="true">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><rect x="8" y="6" width="8" height="3"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"/></svg></span><span class="lab">Presupuestos al instante</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Presupuestos al instante</h3>
+          <p class="tx">Introduce las medidas y el acabado y obtén al momento el presupuesto, el precio de venta recomendado y tu margen.</p>
         </div>
       </li>
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-38.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Guarda borradores de presupuestos para cuando los necesites</h3>
-          <p>Guarda borradores de tus presupuestos de forma segura y accede a ellos siempre que los necesites. Mantén tus propuestas organizadas y listas para consultar, editar o enviar en el momento ideal, sin perder ningún detalle.</p>
+      <li class="" tabindex="0" aria-expanded="false">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span><span class="lab">Borradores</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Borradores</h3>
+          <p class="tx">Guarda tus presupuestos y recupéralos cuando quieras para consultarlos, editarlos o enviarlos.</p>
         </div>
       </li>
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-36.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Muestras de tejidos gratuitas a un click con envío en 24h</h3>
-          <p>Como cliente de Rols ya tienes acceso a solicitar muestras gratuitas para valorar calidad, tacto y diseño. Con el área privada es lo mismo pero más rápido ya que entran directamente nuestro sistema, les damos prioridad y además es mucho más cómodo para ti.</p>
+      <li class="" tabindex="0" aria-expanded="false">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10v10H4z"/><path d="M14 7l4 4-7 7"/><path d="M7 20h11a2 2 0 0 0 2-2v-4"/></svg></span><span class="lab">Muestras gratuitas</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Muestras gratuitas</h3>
+          <p class="tx">Pide muestras de tejidos a un clic. Entran directas en nuestro sistema, con prioridad y envío en 24h.</p>
         </div>
       </li>
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-34.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Atención preferente a tus pedidos y seguimiento en tiempo real</h3>
-          <p>Gestiona tus pedidos directamente y sigue cada etapa en tiempo real. Desde la confirmación hasta la salida de fábrica, mantente siempre informado sobre el progreso de tus alfombras a medida, sin intermediarios ni esperas. Además, tus pedidos tienen prioridad en la gestión, garantizando máxima rapidez y eficiencia en cada proceso.</p>
+      <li class="" tabindex="0" aria-expanded="false">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span><span class="lab">Seguimiento de pedidos</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Seguimiento de pedidos</h3>
+          <p class="tx">Sigue cada pedido en tiempo real, de la confirmación a la salida de fábrica, con prioridad en la gestión.</p>
         </div>
       </li>
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-39.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Accede a tu histórico de pedidos y facturas en cualquier momento</h3>
-          <p>Accede fácilmente a tu histórico de pedidos y facturas en cualquier momento. Mantén todo tu historial de compras organizado y a un clic de distancia, para que puedas consultar, descargar o gestionar tus documentos sin complicaciones.</p>
+      <li class="" tabindex="0" aria-expanded="false">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span><span class="lab">Histórico y facturas</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Histórico y facturas</h3>
+          <p class="tx">Consulta y descarga tu histórico de pedidos y tus facturas siempre que lo necesites.</p>
         </div>
       </li>
-      <li>
-        <figure><img src="https://www.rolscarpets.com/wp-content/uploads/2024/11/Group-37.png" alt="" width="688" height="364" loading="lazy" decoding="async"></figure>
-        <div class="tx">
-          <h3>Gestiona tus propios usuarios y tiendas</h3>
-          <p>Gestiona de forma autónoma tus propios usuarios y tiendas desde una sola plataforma. Añade o elimina usuarios, asigna permisos específicos y administra las tiendas de tu red sin complicaciones. Esta funcionalidad te ofrece total control y flexibilidad para organizar tu equipo y puntos de venta.</p>
+      <li class="" tabindex="0" aria-expanded="false">
+        <div class="foot"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.5a4.5 4.5 0 0 1 5.5 4.5"/></svg></span><span class="lab">Usuarios y tiendas</span></div>
+        <div class="body">
+          <p class="eyebrow">Rols Pro</p>
+          <h3>Usuarios y tiendas</h3>
+          <p class="tx">Añade usuarios, asigna permisos y administra las tiendas de tu red desde una sola plataforma.</p>
         </div>
       </li>
     </ul>
@@ -596,6 +622,33 @@
     }
 
   })();
+</script>
+
+<script>
+(function(){
+  var list=document.getElementById('tiles'); if(!list) return;
+  var tiles=[].slice.call(list.children), cur=0, timer=null, inView=false, hovering=false;
+  var desk=window.matchMedia('(min-width:1100px) and (hover:hover)');
+  var still=window.matchMedia('(prefers-reduced-motion:reduce)');
+  function open(i){
+    if(i===cur) return; cur=i;
+    tiles.forEach(function(li,k){ var on=k===i; li.classList.toggle('on',on); li.setAttribute('aria-expanded',on?'true':'false'); });
+  }
+  function stop(){ clearInterval(timer); timer=null; }
+  function play(){ stop(); if(desk.matches && !still.matches && inView && !hovering){ timer=setInterval(function(){ open((cur+1)%tiles.length); },4000); } }
+  tiles.forEach(function(li,i){
+    li.addEventListener('mouseenter',function(){ if(desk.matches) open(i); });
+    li.addEventListener('click',function(){ open(i); });
+    li.addEventListener('focus',function(){ if(desk.matches) open(i); });
+    li.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(i); } });
+  });
+  list.addEventListener('mouseenter',function(){ hovering=true; stop(); });
+  list.addEventListener('mouseleave',function(){ hovering=false; play(); });
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ inView=es[0].isIntersecting; inView?play():stop(); },{threshold:.4}).observe(list);
+  } else { inView=true; play(); }
+  (desk.addEventListener?desk.addEventListener('change',play):desk.addListener(play));
+})();
 </script>
 </body>
 </html>
